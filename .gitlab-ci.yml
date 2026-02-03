@@ -2,6 +2,8 @@ image: node:20
 
 pages:
   stage: deploy
+  tags:
+    - cv          # <-- make sure this matches the tag you gave your NAS runner
   script:
     - npm install
     - npm run build
