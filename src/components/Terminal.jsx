@@ -23,6 +23,8 @@ export default function Terminal() {
       }
     })
 
+
+
     const fitAddon = new FitAddon()
     term.loadAddon(fitAddon)
     term.open(containerRef.current)
@@ -138,7 +140,7 @@ function handleCommand(term, input) {
             "Bla. Bla. Bla fill in"
         )
         } else if (args[0] === "MyCV.txt"){
-            term.writeln("Here is my CV")
+            term.writeln("Here is my CV. Test")
         } else {
         term.writeln("cat: file not found")
         }
