@@ -140,7 +140,7 @@ function handleCommand(term, input) {
             "Bla. Bla. Bla fill in"
         )
         } else if (args[0] === "MyCV.txt"){
-            term.writeln("Here is my CV. Test")
+            term.writeln("Here is my CV. Test, test")
         } else {
         term.writeln("cat: file not found")
         }
