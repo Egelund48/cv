@@ -144,7 +144,7 @@ Type 'help' to see the list of available commands
 // --- Auto complete function ---
 // --- Autocomplete function ---
 function autocomplete(input) {
-  const commands = ["help", "whoami", "ls", "cat", "cd", "about", "banner", "clear", "linkedin"]
+  const commands = ["help", "whoami", "ls", "cat", "cd", "about", "banner", "clear", "linkedin", "gitlab", "github"]
   const files = ["AboutMe.txt", "MyCV.txt", "projects/"]
   
   const parts = input.split(" ")
