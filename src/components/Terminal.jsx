@@ -76,9 +76,11 @@ Type 'help' to see the list of available commands
 
       if (code === "Enter") {
         term.write("\r\n")
-        handleCommand(term, input.trim())
+        const shouldWaitForPrompt = handleCommand(term, input.trim())
         input = ""
-        writePrompt()
+        if (!shouldWaitForPrompt) {
+          writePrompt()
+        }
       } else if (code === "Backspace") {
         if (input.length > 0) {
           input = input.slice(0, -1)
@@ -145,7 +147,7 @@ Type 'help' to see the list of available commands
 // --- Auto complete function ---
 // --- Autocomplete function ---
 function autocomplete(input) {
-  const commands = ["help", "whoami", "ls", "cat", "cd", "about", "banner", "clear"]
+  const commands = ["help", "whoami", "ls", "cat", "cd", "about", "banner", "clear", "linkedin"]
   const files = ["AboutMe.txt", "MyCV.txt", "projects/"]
   
   const parts = input.split(" ")
@@ -196,7 +198,7 @@ Type 'help' to see the list of available commands
     case "help":
         term.writeln("Welcome to my website!\n")
         term.writeln("Here are all the available commands:\n")
-        term.writeln("whoami, ls, cat, cd, help, about, banner")
+        term.writeln("whoami, ls, cat, cd, help, about, banner, linkedin")
         break
     case "whoami":
         term.writeln("Hello!\n")
@@ -227,6 +229,23 @@ Type 'help' to see the list of available commands
             term.writeln(line)
         })
         break
+
+    case "linkedin": 
+      term.write("Deploying my LinkedIn profile")
+      let dots = 0
+      const loadingInterval = setInterval(() => {
+          term.write(".")
+          dots++
+          if (dots === 6) {
+              clearInterval(loadingInterval)
+              term.writeln("")
+              window.open("https://www.linkedin.com/in/christian-egelund-hansen-94586a298/", "_blank")
+              // Write prompt after opening link
+              term.write(`${currentPath}$ `)
+          }
+      }, 800)
+      return true // Signal to not write prompt immediately
+
     default:
         term.writeln(`command not found: ${cmd}`)
   }
