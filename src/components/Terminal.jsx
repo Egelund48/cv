@@ -44,7 +44,9 @@ export default function Terminal() {
  \\  /\\  /|  __/| || (__ | (_) || | | | | ||  __/ | |_ | (_) | | | | | | || |_| |  \\ V  V / |  __/| |_) |\\__ \\| || |_ |  __/ _           
   \\/  \\/  \\___||_| \\___| \\___/ |_| |_| |_| \\___|  \\__| \\___/  |_| |_| |_| \\__, |   \\_/\\_/   \\___||_.__/ |___/|_| \\__| \\___|( )          
                                                                           __/ |                                           |/           
-                                                                         |___/                                                         
+                                                                         |___/                                                    
+                                                                         
+Type 'help' to see the list of available commands
 `
 
     // Animate banner line by line
@@ -82,9 +84,33 @@ export default function Terminal() {
           input = input.slice(0, -1)
           term.write("\b \b")
         }
+      } else if (code === "Tab"){
+        domEvent.preventDefault() // Prevent default tab behavior
+        
+        const result = autocomplete(input)
+        
+        if (result.completed) {
+          // Clear current input
+          for (let i = 0; i < input.length; i++) {
+            term.write("\b \b")
+          }
+          input = result.completed
+          term.write(result.completed)
+        } else if (result.matches && result.matches.length > 1) {
+          // Show all matches
+          term.write("\r\n")
+          term.writeln(result.matches.join("  "))
+          writePrompt()
+          term.write(input)
+        }
       } else if (!domEvent.ctrlKey && !domEvent.metaKey && code.length === 1) {
         input += key
         term.write(key)
+      } else if ((domEvent.ctrlKey || domEvent.metaKey) && code === "k") {
+          // Ctrl+K or Cmd+K to clear terminal
+          domEvent.preventDefault()
+          term.clear()
+          input = ""
       }
     })
 
@@ -116,16 +142,61 @@ export default function Terminal() {
   )
 }
 
+// --- Auto complete function ---
+// --- Autocomplete function ---
+function autocomplete(input) {
+  const commands = ["help", "whoami", "ls", "cat", "cd", "about", "banner", "clear"]
+  const files = ["AboutMe.txt", "MyCV.txt", "projects/"]
+  
+  const parts = input.split(" ")
+  const isFirstWord = parts.length === 1
+  
+  if (isFirstWord) {
+    const matches = commands.filter(cmd => cmd.startsWith(input))
+    if (matches.length === 1) {
+      return { completed: matches[0], matches: null }
+    } else if (matches.length > 1) {
+      return { completed: null, matches }
+    }
+  } else {
+    const lastWord = parts[parts.length - 1]
+    const matches = files.filter(file => file.startsWith(lastWord))
+    
+    if (matches.length === 1) {
+      parts[parts.length - 1] = matches[0]
+      return { completed: parts.join(" "), matches: null }
+    } else if (matches.length > 1) {
+      return { completed: null, matches }
+    }
+  }
+  
+  return { completed: null, matches: null }
+}
+
 // --- Command handling ---
 function handleCommand(term, input) {
   if (!input) return
   const [cmd, ...args] = input.split(" ")
   const currentPath = "Christian_Egelund_Hansen/.../cv"
+  const welcome = `
+  
+  _    _        _                                 _                                               _           _  _                      
+ | |  | |      | |                               | |                                             | |         (_)| |                     
+ | |  | |  ___ | |  ___   ___   _ __ ___    ___  | |_   ___    _ __ ___   _   _  __      __  ___ | |__   ___  _ | |_   ___              
+ | |/\\| | / _ \\| | / __| / _ \\ | '_ \` _ \\  / _ \\ | __| / _ \\  | '_ \` _ \\ | | | | \\ \\ /\\ / / / _ \\| '_ \\ / __|| || __| / _ \\             
+ \\  /\\  /|  __/| || (__ | (_) || | | | | ||  __/ | |_ | (_) | | | | | | || |_| |  \\ V  V / |  __/| |_) |\\__ \\| || |_ |  __/ _           
+  \\/  \\/  \\___||_| \\___| \\___/ |_| |_| |_| \\___|  \\__| \\___/  |_| |_| |_| \\__, |   \\_/\\_/   \\___||_.__/ |___/|_| \\__| \\___|( )          
+                                                                          __/ |                                           |/           
+                                                                         |___/                                                    
+                                                                         
+Type 'help' to see the list of available commands
+`
 
   switch (cmd) {
     case "help":
-        
-        term.writeln("Available commands: whoami, ls, cat, cd, help")
+        term.writeln("Welcome to my website!\n")
+        term.writeln("Here are all the available commands:\n")
+        term.writeln("whoami, ls, cat, cd, help, about, banner")
         break
     case "whoami":
         term.writeln("Hello!\n")
@@ -148,6 +219,13 @@ function handleCommand(term, input) {
 
     case "cd":
         term.writeln("cd command simulated")
+        break
+    
+    case "banner": 
+        const bannerLines = welcome.split("\n")
+        bannerLines.forEach(line => {
+            term.writeln(line)
+        })
         break
     default:
         term.writeln(`command not found: ${cmd}`)
