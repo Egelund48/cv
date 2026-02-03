@@ -2,8 +2,6 @@ image: node:20
 
 pages:
   stage: deploy
-  tags:
-    - cv
   script:
     - npm install
     - npm run build
