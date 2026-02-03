@@ -22,9 +22,6 @@ export default function Terminal() {
         foreground: "#00ff88"
       }
     })
-
-
-
     const fitAddon = new FitAddon()
     term.loadAddon(fitAddon)
     term.open(containerRef.current)
@@ -36,7 +33,7 @@ export default function Terminal() {
     const resize = () => fitAddon.fit()
     window.addEventListener("resize", resize)
 
- const welcome = `
+  const welcome = `
   _    _        _                                 _                                               _           _  _                      
  | |  | |      | |                               | |                                             | |         (_)| |                     
  | |  | |  ___ | |  ___   ___   _ __ ___    ___  | |_   ___    _ __ ___   _   _  __      __  ___ | |__   ___  _ | |_   ___              
@@ -198,7 +195,8 @@ Type 'help' to see the list of available commands
     case "help":
         term.writeln("Welcome to my website!\n")
         term.writeln("Here are all the available commands:\n")
-        term.writeln("whoami, ls, cat, cd, help, about, banner, linkedin")
+        term.writeln("whoami, ls, cat, cd, help, about, banner, linkedin,")
+        term.writeln("github, gitlab")
         break
     case "whoami":
         term.writeln("Hello!\n")
@@ -246,6 +244,20 @@ Type 'help' to see the list of available commands
       }, 800)
       return true // Signal to not write prompt immediately
 
+    case "gitlab": 
+      term.write("Deploying my GitLab profile")
+      let gitlabDots = 0
+      const gitlabLoadingInterval = setInterval(() => {
+          term.write(".")
+          gitlabDots++
+          if (gitlabDots === 6) {
+              clearInterval(gitlabLoadingInterval)
+              term.writeln("")
+              window.open("https://gitlab.sdu.dk/chhan24", "_blank")
+              term.write(`${currentPath}$ `)
+          }
+      }, 800)
+      return true
     default:
         term.writeln(`command not found: ${cmd}`)
   }
