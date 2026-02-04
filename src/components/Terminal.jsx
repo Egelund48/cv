@@ -196,7 +196,9 @@ Type 'help' to see the list of available commands
         term.writeln("Welcome to my website!\n")
         term.writeln("Here are all the available commands:\n")
         term.writeln("whoami, ls, cat, cd, help, about, banner, linkedin,")
-        term.writeln("github, gitlab")
+        term.writeln("github, gitlab\n")
+        term.writeln("  [tab]: trigger completion.")
+        term.writeln("  [ctrl+k]/clear: clear terminal.")
         break
     case "whoami":
         term.writeln("Hello!\n")
@@ -231,26 +233,27 @@ Type 'help' to see the list of available commands
     case "linkedin": 
       term.write("Deploying my LinkedIn profile")
       let dots = 0
+      const maxDots = Math.floor(Math.random() * 4) + 3 // between 3-6 dots
       const loadingInterval = setInterval(() => {
           term.write(".")
           dots++
-          if (dots === 6) {
+          if (dots === maxDots) {
               clearInterval(loadingInterval)
               term.writeln("")
               window.open("https://www.linkedin.com/in/christian-egelund-hansen-94586a298/", "_blank")
-              // Write prompt after opening link
               term.write(`${currentPath}$ `)
           }
       }, 800)
-      return true // Signal to not write prompt immediately
+      return true 
 
     case "gitlab": 
       term.write("Deploying my GitLab profile")
       let gitlabDots = 0
+      const maxDotsgitlab = Math.floor(Math.random() * 4) + 3
       const gitlabLoadingInterval = setInterval(() => {
           term.write(".")
           gitlabDots++
-          if (gitlabDots === 6) {
+          if (gitlabDots === maxDotsgitlab) {
               clearInterval(gitlabLoadingInterval)
               term.writeln("")
               window.open("https://gitlab.sdu.dk/chhan24", "_blank")
@@ -258,6 +261,27 @@ Type 'help' to see the list of available commands
           }
       }, 800)
       return true
+
+    case "github": 
+      term.writeln("I primarily use gitlab due to school, however i used github to deloy the following website")
+      term.write("Deploying my github profile")
+      const maxDotsgithub = Math.floor(Math.random() * 4) + 3
+      let githubdots = 0
+      const githubloadingInterval = setInterval(() => {
+        term.write(".")
+        githubdots++
+        if(githubdots === maxDotsgithub){
+          clearInterval(githubloadingInterval)
+          term.writeln("")
+          window.open("https://github.com/Egelund48", "_blank")
+          term.write(`${currentPath}$` )
+        }
+      }, 500)
+      return true
+
+    case "clear": 
+      term.clear()
+      break 
     default:
         term.writeln(`command not found: ${cmd}`)
   }
