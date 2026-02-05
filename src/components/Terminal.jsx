@@ -195,10 +195,10 @@ Type 'help' to see the list of available commands
     case "help":
         term.writeln("Welcome to my website!\n")
         term.writeln("Here are all the available commands:\n")
-        term.writeln("whoami, ls, cat, cd, help, about, banner, linkedin,")
+        term.writeln("whoami, ls, cat, cd, help, banner, linkedin,")
         term.writeln("github, gitlab\n")
         term.writeln("  [tab]: trigger completion.")
-        term.writeln("  [ctrl+k]/clear: clear terminal.")
+        term.writeln("  [ctrl+k]/clear: clear terminal.\n")
         break
     case "whoami":
         term.writeln("Hello!\n")
@@ -209,11 +209,14 @@ Type 'help' to see the list of available commands
         break
     case "cat":
         if (args[0] === "AboutMe.txt") {
-        term.writeln(
-            "Bla. Bla. Bla fill in"
-        )
+          term.writeln("")
+          term.writeln("Im a 22 year old Computer scientist, who loves to create software. Wheather it's backend, frontend or fullstack.\n")
+          term.writeln("I made this website, as a CV to show my knowlegde of frontend development, but also my knowlegde for linux and actually deloying websites\n")
+          term.writeln("Im currently working on a personal website, where i both show my other projects, such as a premie leauge rating system and a Beer club for myfriends and I\n")
+          term.writeln("I will also show other sides of my life, such as my other hobbies, family and my dog Jørgen.")
+          term.writeln("check if its live by typing 'help' and looking for 'MyWebsite'\n")
         } else if (args[0] === "MyCV.txt"){
-            term.writeln("Here is my CV. Test, test, test, last test")
+            term.writeln("If you want to checkout my CV, either type 'linkedin' for my linkedin or check my website!")
         } else {
         term.writeln("cat: file not found")
         }
@@ -283,6 +286,6 @@ Type 'help' to see the list of available commands
       term.clear()
       break 
     default:
-        term.writeln(`command not found: ${cmd}`)
+        term.writeln(`command not found: ${cmd}. Try 'help' to get started`)
   }
 }
